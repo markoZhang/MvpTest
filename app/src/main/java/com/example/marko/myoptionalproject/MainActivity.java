@@ -13,10 +13,6 @@ import com.example.marko.myoptionalproject.base.BaseActivity;
 
 import butterknife.BindView;
 
-/**
- * @author Marko
- * @date 2018/4/14
- */
 public class MainActivity extends BaseActivity {
 
 
@@ -42,7 +38,7 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        Intent intent = new Intent(MainActivity.this, ViewPagerActivity.class);
+                        Intent intent = new Intent(getApplication(), ViewPagerActivity.class);
                         startActivity(intent);
                         break;
                     default:
