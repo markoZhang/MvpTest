@@ -4,18 +4,22 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.marko.myoptionalproject.R;
 import com.example.marko.myoptionalproject.adapter.ViewPagerAdapter;
 import com.example.marko.myoptionalproject.base.BaseActivity;
-import com.example.marko.myoptionalproject.config.ImageUrl;
+import com.example.marko.myoptionalproject.base.BaseView;
+import com.example.marko.myoptionalproject.presenter.ImgPresenter;
 import com.example.marko.myoptionalproject.util.PointUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -25,14 +29,16 @@ import butterknife.BindView;
  * @date 2018/4/14
  */
 
-public class ViewPagerActivity extends BaseActivity {
+public class ViewPagerActivity extends BaseActivity implements BaseView{
 
     private Handler mHandler;
     private int initPosition = 0;
     private int preIndex = 0;
-    private final int WHAT_START_PLAY = 1;
-    private ArrayList<String> imgUrls;
+    private final static int WHAT_START_PLAY = 1;
     private PointUtil pointUtil;
+    private ImgPresenter imgPresenter;
+
+
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
     @BindView(R.id.radio_group)
@@ -45,31 +51,34 @@ public class ViewPagerActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        initHandler();
-        imgUrls = new ArrayList<>();
-        for (String url : ImageUrl.TRANSITION_URLS) {
-            imgUrls.add(url);
-        }
-        initViewPager(imgUrls);
-        pointUtil = new PointUtil(radioGroup);
-        pointUtil.initRadioButton(imgUrls.size());
+        mHandler = new MyHandler(this);
+//        initHandler();
+        imgPresenter = new ImgPresenter(this);
+        imgPresenter.subscribe();
         Message message = mHandler.obtainMessage(WHAT_START_PLAY, initPosition + 1, 0);
         mHandler.sendMessageDelayed(message, 3000);
     }
 
-    private void initHandler() {
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
+    // 静态匿名内部类+弱引用 防止内存泄漏
+    static class MyHandler extends Handler{
+        WeakReference<ViewPagerActivity> activityWeakReference ;
+
+        private MyHandler(ViewPagerActivity activity) {
+            this.activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            final ViewPagerActivity activity = activityWeakReference.get();
+            if (activity != null){
+                switch (msg.what){
                     // 开始轮播
-                    case WHAT_START_PLAY: {
-                        mViewPager.setCurrentItem(msg.arg1, true);
+                    case WHAT_START_PLAY:
+                        activity.mViewPager.setCurrentItem(msg.arg1, true);
                         break;
-                    }
                 }
             }
-        };
+        }
     }
 
     @Override
@@ -81,9 +90,10 @@ public class ViewPagerActivity extends BaseActivity {
         ArrayList<View> imageViews = new ArrayList<>();
         for (Object url : imageUrls) {
             String urlStr = (String) url;
+            Log.e("TAG", "initViewPager: " +  urlStr);
             // ImageView的初始化必须放在for-each循环内
             ImageView imageView = new ImageView(this);
-            Glide.with(this).load(urlStr).asBitmap().diskCacheStrategy(DiskCacheStrategy.RESULT).into(imageView);
+            Glide.with(this).load(urlStr).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
             imageViews.add(imageView);
         }
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(imageViews);
@@ -133,5 +143,27 @@ public class ViewPagerActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void setImgData(ArrayList<String> imgUrls) {
+        Log.e("TAG", "setImgData: " + imgUrls.size() );
+        initViewPager(imgUrls);
+        pointUtil = new PointUtil(radioGroup);
+        pointUtil.initRadioButton(imgUrls.size());
+    }
+
+    @Override
+    public void setImgDataFailure(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (imgPresenter != null){
+            imgPresenter.unSubscribe();
+        }
+        mHandler.removeCallbacksAndMessages(null);
     }
 }
