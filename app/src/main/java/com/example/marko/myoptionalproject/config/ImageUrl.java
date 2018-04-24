@@ -8,6 +8,7 @@ package com.example.marko.myoptionalproject.config;
 
 public class ImageUrl {
 
+    // ViewPager数据源
     private static final String TRANSITION_URL_01 = "http://ojyz0c8un.bkt.clouddn.com/b_1.jpg";
     private static final String TRANSITION_URL_02 = "http://ojyz0c8un.bkt.clouddn.com/b_2.jpg";
     private static final String TRANSITION_URL_03 = "http://ojyz0c8un.bkt.clouddn.com/b_3.jpg";
@@ -24,5 +25,8 @@ public class ImageUrl {
             , TRANSITION_URL_07, TRANSITION_URL_08, TRANSITION_URL_09
             , TRANSITION_URL_10
     };
+
+    //RecyclerView数据源
+    public static  final String recyclerUrl = "http://bz.budejie.com/?typeid=2&ver=3.4.3&no_cry=1&client=android&c=wallPaper&a=random&bigid=0";
 
 }

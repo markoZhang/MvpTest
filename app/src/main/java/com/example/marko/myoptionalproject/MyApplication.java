@@ -3,6 +3,8 @@ package com.example.marko.myoptionalproject;
 import android.app.Application;
 import android.content.Context;
 
+import com.squareup.leakcanary.LeakCanary;
+
 /**
  * @author Marko
  * @date 2018/4/16
@@ -24,6 +26,11 @@ public class MyApplication extends Application{
             instance = this;
         }
         context = getApplicationContext();
+        //初始化LeakCanary
+        if (LeakCanary.isInAnalyzerProcess(this)){
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     public static Context getContext(){

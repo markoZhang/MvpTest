@@ -6,6 +6,7 @@ import com.example.marko.myoptionalproject.base.BasePresenter;
 import com.example.marko.myoptionalproject.base.BaseView;
 import com.example.marko.myoptionalproject.model.ImgResult;
 import com.example.marko.myoptionalproject.module.NetWork;
+import com.example.marko.myoptionalproject.view.ImgView;
 
 import java.util.ArrayList;
 
@@ -21,11 +22,11 @@ import rx.schedulers.Schedulers;
 
 public class ImgPresenter implements BasePresenter {
 
-    private BaseView baseView;
+    private ImgView imgView;
     private Subscription subscription;
 
-    public ImgPresenter(BaseView baseView) {
-        this.baseView = baseView;
+    public ImgPresenter(ImgView imgView) {
+        this.imgView = imgView;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ImgPresenter implements BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        baseView.setImgDataFailure("图片加载失败");
+                        imgView.setImgDataFailure("图片加载失败");
                         Log.e("TAG", "onError: " + e);
                     }
 
@@ -62,13 +63,13 @@ public class ImgPresenter implements BasePresenter {
                         if (imgResult != null && imgResult.getData() != null && imgResult.getData().size() > 0) {
                             ArrayList<String> imgUrls = new ArrayList<>();
                             for (ImgResult.DataBean dataBean : imgResult.getData()) {
-                                if (dataBean.getImage_url() != null&&!dataBean.getImage_url().isEmpty()) {
+                                if (dataBean.getImage_url() != null && !dataBean.getImage_url().isEmpty()) {
                                     imgUrls.add(dataBean.getImage_url());
                                 }
                             }
-                            baseView.setImgData(imgUrls);
+                            imgView.setImgData(imgUrls);
                         } else {
-                            baseView.setImgDataFailure("图片加载失败");
+                            imgView.setImgDataFailure("图片加载失败");
                         }
                     }
                 });

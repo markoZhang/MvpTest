@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public interface BaseView extends View{
 
-    void setImgData(ArrayList<String> imgUrls);
-    void setImgDataFailure(String message);
+    void showProgress();
+
+    void hideProgress();
+
+
 }

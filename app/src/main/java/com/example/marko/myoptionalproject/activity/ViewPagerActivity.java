@@ -1,5 +1,6 @@
 package com.example.marko.myoptionalproject.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,18 +19,22 @@ import com.example.marko.myoptionalproject.base.BaseActivity;
 import com.example.marko.myoptionalproject.base.BaseView;
 import com.example.marko.myoptionalproject.presenter.ImgPresenter;
 import com.example.marko.myoptionalproject.util.PointUtil;
+import com.example.marko.myoptionalproject.view.ImgView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author Marko
  * @date 2018/4/14
+ * 1、ViewPager + RxJava + Retrofit + MVP
+ * 2、Handler优化，防止内存泄漏
  */
 
-public class ViewPagerActivity extends BaseActivity implements BaseView{
+public class ViewPagerActivity extends BaseActivity implements ImgView{
 
     private Handler mHandler;
     private int initPosition = 0;
@@ -52,12 +57,13 @@ public class ViewPagerActivity extends BaseActivity implements BaseView{
     @Override
     protected void initView(Bundle savedInstanceState) {
         mHandler = new MyHandler(this);
-//        initHandler();
         imgPresenter = new ImgPresenter(this);
         imgPresenter.subscribe();
         Message message = mHandler.obtainMessage(WHAT_START_PLAY, initPosition + 1, 0);
         mHandler.sendMessageDelayed(message, 3000);
     }
+
+
 
     // 静态匿名内部类+弱引用 防止内存泄漏
     static class MyHandler extends Handler{
@@ -90,7 +96,6 @@ public class ViewPagerActivity extends BaseActivity implements BaseView{
         ArrayList<View> imageViews = new ArrayList<>();
         for (Object url : imageUrls) {
             String urlStr = (String) url;
-            Log.e("TAG", "initViewPager: " +  urlStr);
             // ImageView的初始化必须放在for-each循环内
             ImageView imageView = new ImageView(this);
             Glide.with(this).load(urlStr).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
@@ -145,9 +150,9 @@ public class ViewPagerActivity extends BaseActivity implements BaseView{
         });
     }
 
+
     @Override
     public void setImgData(ArrayList<String> imgUrls) {
-        Log.e("TAG", "setImgData: " + imgUrls.size() );
         initViewPager(imgUrls);
         pointUtil = new PointUtil(radioGroup);
         pointUtil.initRadioButton(imgUrls.size());
@@ -157,6 +162,15 @@ public class ViewPagerActivity extends BaseActivity implements BaseView{
     public void setImgDataFailure(String message) {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
 
     @Override
     protected void onDestroy() {
@@ -165,5 +179,8 @@ public class ViewPagerActivity extends BaseActivity implements BaseView{
             imgPresenter.unSubscribe();
         }
         mHandler.removeCallbacksAndMessages(null);
+        Log.e("TAG", "onStop: onDestroy方法调用" );
     }
+
+
 }

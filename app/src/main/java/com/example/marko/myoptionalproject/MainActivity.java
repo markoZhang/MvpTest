@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.marko.myoptionalproject.activity.RecycleViewActivity;
 import com.example.marko.myoptionalproject.activity.ViewPagerActivity;
 import com.example.marko.myoptionalproject.base.BaseActivity;
 
@@ -44,6 +45,16 @@ public class MainActivity extends BaseActivity {
                     case 0:
                         Intent intent = new Intent(MainActivity.this, ViewPagerActivity.class);
                         startActivity(intent);
+                        break;
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+                        Intent intent3 = new Intent(MainActivity.this, RecycleViewActivity.class);
+                        startActivity(intent3);
                         break;
                     default:
                         break;
