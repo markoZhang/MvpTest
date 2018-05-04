@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context="com.example.marko.myoptionalproject.MainActivity">
 
+
     <ListView
         android:id="@+id/function_list"
         android:layout_width="match_parent"

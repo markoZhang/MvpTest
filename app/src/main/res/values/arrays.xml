@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="functions">
-        <item>ViewPager图片轮播</item>
-        <item>ViewFlipper图片轮播</item>
+        <item>ViewPager轮播</item>
         <item>Banner图片轮播</item>
-        <item>RecyclerView实现瀑布流</item>
+        <item>RecyclerView+OkHttp3</item>
     </string-array>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.marko.myoptionalproject.adapter;
 
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class ViewPagerAdapter extends PagerAdapter{
         if (listPosition < 0){
             listPosition = listPosition + mViewList.size();
         }
-        View itemView = mViewList.get(listPosition);
+       View itemView = mViewList.get(listPosition);
         // 如果该子view上次生成时已经添加了父组件,就remove掉.防止多次添加父组件而抛出IllegalStateException
         ViewGroup viewGroup = (ViewGroup) itemView.getParent();
         if (viewGroup != null){
@@ -57,5 +58,7 @@ public class ViewPagerAdapter extends PagerAdapter{
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeAllViews();
+        System.gc();
     }
 }

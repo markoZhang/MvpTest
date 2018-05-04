@@ -25,7 +25,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * @author Marko
@@ -98,7 +97,11 @@ public class ViewPagerActivity extends BaseActivity implements ImgView{
             String urlStr = (String) url;
             // ImageView的初始化必须放在for-each循环内
             ImageView imageView = new ImageView(this);
-            Glide.with(this).load(urlStr).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
+            Glide.with(this)
+                    .load(urlStr)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(imageView);
             imageViews.add(imageView);
         }
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(imageViews);
@@ -179,7 +182,6 @@ public class ViewPagerActivity extends BaseActivity implements ImgView{
             imgPresenter.unSubscribe();
         }
         mHandler.removeCallbacksAndMessages(null);
-        Log.e("TAG", "onStop: onDestroy方法调用" );
     }
 
 

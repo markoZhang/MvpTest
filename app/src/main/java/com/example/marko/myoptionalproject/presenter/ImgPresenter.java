@@ -1,5 +1,6 @@
 package com.example.marko.myoptionalproject.presenter;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.example.marko.myoptionalproject.base.BasePresenter;
@@ -7,6 +8,7 @@ import com.example.marko.myoptionalproject.base.BaseView;
 import com.example.marko.myoptionalproject.model.ImgResult;
 import com.example.marko.myoptionalproject.module.NetWork;
 import com.example.marko.myoptionalproject.view.ImgView;
+import com.trello.rxlifecycle.RxLifecycle;
 
 import java.util.ArrayList;
 
@@ -36,7 +38,7 @@ public class ImgPresenter implements BasePresenter {
 
     @Override
     public void unSubscribe() {
-        if (subscription != null && subscription.isUnsubscribed()) {
+        if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
     }

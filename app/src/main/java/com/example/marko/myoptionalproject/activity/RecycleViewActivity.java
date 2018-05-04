@@ -3,7 +3,6 @@ package com.example.marko.myoptionalproject.activity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 
 import com.example.marko.myoptionalproject.R;
 import com.example.marko.myoptionalproject.adapter.RecyclerAdapter;
@@ -11,16 +10,16 @@ import com.example.marko.myoptionalproject.base.BaseActivity;
 import com.example.marko.myoptionalproject.config.ImageUrl;
 import com.example.marko.myoptionalproject.model.RecyclerImgResult;
 import com.example.marko.myoptionalproject.util.OkHttpUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.security.auth.login.LoginException;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
+/**
+ * @author Marko
+ * @date 2018/4/16
+ * 1、RecyclerView + OkHttp3
+ */
 public class RecycleViewActivity extends BaseActivity {
 
     //获取的json数据中的数据集合

@@ -50,9 +50,6 @@ public class MainActivity extends BaseActivity {
 
                         break;
                     case 2:
-
-                        break;
-                    case 3:
                         Intent intent3 = new Intent(MainActivity.this, RecycleViewActivity.class);
                         startActivity(intent3);
                         break;
@@ -61,5 +58,14 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    /**
+     ** 主界面不需要支持滑动返回，重写该方法永久禁用当前界面的滑动返回功能
+     * @return
+     */
+    @Override
+    public boolean isSupportSwipeBack() {
+        return false;
     }
 }
